@@ -42,8 +42,8 @@ class FilteredTodosBloc extends Bloc<FilteredTodosEvent, FilteredTodosState> {
       setFilteredTodos();
     });
 
-    on<FilteredTodosEvent>((event, emit) {
-      // TODO: implement event handler
+    on<CalculatefilteredTodosEvent>((event, emit) {
+      emit(state.copyWith(filteredTodos: event.filteredTodos));
     });
   }
 
@@ -79,7 +79,7 @@ class FilteredTodosBloc extends Bloc<FilteredTodosEvent, FilteredTodosState> {
           .toList();
     }
 
-    emit(state.copyWith(filteredTodos: _filteredTodos));
+    add(CalculatefilteredTodosEvent(filteredTodos: _filteredTodos));
   }
 
   @override
