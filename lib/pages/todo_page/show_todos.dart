@@ -96,30 +96,30 @@ class _TodoItemState extends State<TodoItem> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (context) {
-              bool _error = false;
-              textController.text = widget.todo.desc;
-              return StatefulBuilder(
-                  builder: (BuildContext context, StateSetter setState) {
-                return AlertDialog(
-                  title: const Text('Edit Todo'),
-                  content: TextField(
-                    controller: textController,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      errorText: _error ? 'Value cannot be empty' : null,
-                    ),
+      onTap: () => showDialog(
+        context: context,
+        builder: (context) {
+          bool _error = false;
+          textController.text = widget.todo.desc;
+          return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return AlertDialog(
+                title: const Text('Edit Todo'),
+                content: TextField(
+                  controller: textController,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    errorText: _error ? 'Value cannot be empty' : null,
                   ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text("Cancel"),
-                    ),
-                    TextButton(
-                      onPressed: () => setState(() {
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text("Cancel"),
+                  ),
+                  TextButton(
+                    onPressed: () => setState(
+                      () {
                         _error = textController.text.isEmpty ? true : false;
                         if (!_error) {
                           context.read<TodoListBloc>().add(EditTodoEvent(
@@ -127,18 +127,20 @@ class _TodoItemState extends State<TodoItem> {
                               todoDesc: textController.text));
                           Navigator.pop(context);
                         }
-                      }),
-                      child: const Text("Edit"),
+                      },
                     ),
-                  ],
-                );
-              });
-            });
-      },
+                    child: const Text("Edit"),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      ),
       leading: Checkbox(
         value: widget.todo.completed,
         onChanged: (bool? checked) {
-          context.read<TodoListBloc>().toggleTodo(widget.todo.id);
+          context.read<TodoListBloc>().add(ToggleTodoEvent(id: widget.todo.id));
         },
       ),
       title: Text(widget.todo.desc),
