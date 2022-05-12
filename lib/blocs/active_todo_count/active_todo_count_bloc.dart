@@ -13,14 +13,14 @@ class ActiveTodoCountBloc
   late final StreamSubscription todoListSubscription;
 
   final int initialActiveTodoCount;
-  final TodoListBloc todoListCubit;
+  final TodoListBloc todoListBloc;
 
   ActiveTodoCountBloc({
     required this.initialActiveTodoCount,
-    required this.todoListCubit,
+    required this.todoListBloc,
   }) : super(ActiveTodoCountState(activeTodoCount: initialActiveTodoCount)) {
     todoListSubscription =
-        todoListCubit.stream.listen((TodoListState todoListState) {
+        todoListBloc.stream.listen((TodoListState todoListState) {
       print('todoListState: $todoListState');
 
       final int currentActiveTodoCount = todoListState.todos
