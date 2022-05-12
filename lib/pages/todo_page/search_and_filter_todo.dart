@@ -7,36 +7,34 @@ class SearchAndFilterTodo extends StatelessWidget {
   const SearchAndFilterTodo({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextField(
-          decoration: const InputDecoration(
-            labelText: 'Search todos...',
-            border: InputBorder.none,
-            filled: true,
-            prefixIcon: Icon(Icons.search),
+  Widget build(BuildContext context) => Column(
+        children: [
+          TextField(
+            decoration: const InputDecoration(
+              labelText: 'Search todos...',
+              border: InputBorder.none,
+              filled: true,
+              prefixIcon: Icon(Icons.search),
+            ),
+            onChanged: (String? newSearchTerm) {
+              if (newSearchTerm != null) {
+                context
+                    .read<TodoSearchBloc>()
+                    .add(SetSearchTermEvent(newSearchTerm: newSearchTerm));
+              }
+            },
           ),
-          onChanged: (String? newSearchTerm) {
-            if (newSearchTerm != null) {
-              context
-                  .read<TodoSearchBloc>()
-                  .add(SetSearchTermEvent(newSearchTerm: newSearchTerm));
-            }
-          },
-        ),
-        const SizedBox(height: 10.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            filterButton(context, Filter.all),
-            filterButton(context, Filter.active),
-            filterButton(context, Filter.completed),
-          ],
-        )
-      ],
-    );
-  }
+          const SizedBox(height: 10.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              filterButton(context, Filter.all),
+              filterButton(context, Filter.active),
+              filterButton(context, Filter.completed),
+            ],
+          )
+        ],
+      );
 
   Widget filterButton(BuildContext context, Filter filter) {
     return TextButton(
